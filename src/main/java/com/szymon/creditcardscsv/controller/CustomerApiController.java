@@ -3,9 +3,10 @@ package com.szymon.creditcardscsv.controller;
 import com.szymon.creditcardscsv.domain.dao.Person;
 import com.szymon.creditcardscsv.domain.dto.PersonEditRequest;
 import com.szymon.creditcardscsv.domain.dto.PersonRequest;
+import com.szymon.creditcardscsv.domain.dto.SearchRequest;
+import com.szymon.creditcardscsv.domain.dto.StatisticsResponse;
+import com.szymon.creditcardscsv.domain.dto.enums.StatisticsType;
 import com.szymon.creditcardscsv.service.PersonService;
-import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -49,6 +50,31 @@ public class CustomerApiController {
         }else {
             return new ResponseEntity<>("Nie zmieniono", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/persons/delete/{id}")
+    public ResponseEntity<?> removePerson(@PathVariable("id") int id){
+        Optional<Person> optionalPerson = personService.getById(id);
+        if (optionalPerson.isPresent()){
+            personService.delete(id);
+            return new ResponseEntity<>("Usunieto", HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("Nie usunieto", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/person/search")
+    public ResponseEntity<?> searchPerson(@RequestBody SearchRequest searchRequest){
+        List<Person> personList = personService.getByProperty(searchRequest.getPropertyType(),searchRequest.getValue());
+        return new ResponseEntity<>(personList,HttpStatus.OK);
+    }
+
+
+    //TODO test method vvvvv
+    @GetMapping("/person/statistics/{type}")
+    public ResponseEntity<?> statisticsPersons(@PathVariable("type") StatisticsType statisticsType){
+        List<StatisticsResponse> statisticsResponses = personService.getStatistics(statisticsType);
+        return new ResponseEntity<>(statisticsResponses,HttpStatus.OK);
     }
 
     //TODO next method

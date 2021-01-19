@@ -70,12 +70,9 @@ public class CustomerApiController {
     }
 
 
-    //TODO test method vvvvv
     @GetMapping("/person/statistics/{type}")
     public ResponseEntity<?> statisticsPersons(@PathVariable("type") StatisticsType statisticsType){
         List<StatisticsResponse> statisticsResponses = personService.getStatistics(statisticsType);
         return new ResponseEntity<>(statisticsResponses,HttpStatus.OK);
     }
-
-    //TODO next method
 }

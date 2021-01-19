@@ -6,7 +6,9 @@ import com.szymon.creditcardscsv.domain.dto.PersonRequest;
 import com.szymon.creditcardscsv.domain.dto.StatisticsResponse;
 import com.szymon.creditcardscsv.domain.dto.enums.PropertyType;
 import com.szymon.creditcardscsv.domain.dto.enums.StatisticsType;
+import com.szymon.creditcardscsv.domain.utilities.CsvParser;
 import com.szymon.creditcardscsv.service.PersonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,10 +16,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class PersonServiceImpl implements PersonService {
+
+    final CsvParser csvParser;
+
     ArrayList<Person> personArrayList;
 
-    public PersonServiceImpl(){
-        this.personArrayList = new ArrayList<>();
+    public PersonServiceImpl(CsvParser csvParser){
+        this.personArrayList = csvParser.loadList();
+        this.csvParser = csvParser;
     }
 
 

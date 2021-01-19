@@ -25,4 +25,5 @@ public interface PersonService {
     void delete(int id);
 
     List<StatisticsResponse> getStatistics(StatisticsType statisticsType);
+
 }
